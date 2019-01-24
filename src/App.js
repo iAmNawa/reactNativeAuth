@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import firebase from 'firebase';
-import { Header, CardSection, Button } from './components/common';
+import { Header, CardSection, Button, Spinner } from './components/common';
 import secrets from './secrets.js';
 import LoginForm from './components/LoginForm';
 
 class App extends Component {
-  state = { loggedIn: null };
+  state = { loggedIn: null  };
 
   componentWillMount() {
     firebase.initializeApp(secrets);
@@ -21,16 +21,14 @@ class App extends Component {
   }
 
   renderContent() {
-    if (this.state.loggedIn) {
-      return (
-        <CardSection>
-          <Button>
-            Log Out
-          </Button>
-        </CardSection>
-      );
+    switch (this.state.loggedIn) {
+      case true:
+        return <CardSection><Button>Log out</Button></CardSection>;
+      case false:
+        return <LoginForm />;
+      default:
+        return <Spinner size="large" />;
     }
-    return <LoginForm />;
   }
 
   render() {
